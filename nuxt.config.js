@@ -39,6 +39,10 @@ module.exports = {
   env: {
     API_URL: process.env.API_URL
   },
+
+  router: {
+    middleware: ['auth-cookie']
+  },
   /*
   ** Nuxt.js modules
   */

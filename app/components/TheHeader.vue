@@ -8,7 +8,10 @@
     </el-menu-item>
 
     <no-ssr>
-      <el-menu-item index="4" style="float: right;" :route="{ path: '/' }">
+      <el-menu-item v-if="user" index="4" style="float: right;" :route="{ path: `/users/${user.id}` }">
+        <span>{{ user.id }}</span>
+      </el-menu-item>
+      <el-menu-item v-else index="4" style="float: right;" :route="{ path: '/' }">
         <span>ログイン</span>
       </el-menu-item>
     </no-ssr>
@@ -17,3 +20,13 @@
     </el-menu-item>
   </el-menu>
 </template>
+
+<script>
+import { mapGetters } from 'vuex'
+
+export default {
+  computed: {
+    ...mapGetters(['user'])
+  }
+}
+</script>
