@@ -36,6 +36,13 @@ module.exports = {
   */
   plugins: ['@/plugins/element-ui'],
 
+  env: {
+    API_URL: process.env.API_URL
+  },
+
+  router: {
+    middleware: ['auth-cookie']
+  },
   /*
   ** Nuxt.js modules
   */
@@ -47,7 +54,7 @@ module.exports = {
   ** Axios module configuration
   */
   axios: {
-    // See https://github.com/nuxt-community/axios-module#options
+    baseURL: process.env.API_URL
   },
 
   /*
