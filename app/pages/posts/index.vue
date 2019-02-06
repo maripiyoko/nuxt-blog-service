@@ -4,7 +4,7 @@
       <div slot="header" class="clearfix">
         <span>新着投稿</span>
       </div>
-      <el-table :data="showPosts" style="width: 100%" class="table">
+      <el-table :data="showPosts" style="width: 100%" class="table" @row-click="handleClick">
         <el-table-column prop="title" label="タイトル" />
         <el-table-column prop="user.id" label="投稿者" width="180" />
         <el-table-column prop="created_at" label="投稿日時" width="240" />
@@ -14,29 +14,25 @@
 </template>
 
 <script>
+import moment from 'moment'
+import { mapGetters } from 'vuex'
+
 export default {
+  async asyncData({ store }) {
+    await store.dispatch('posts/fetchPosts')
+  },
   computed: {
     showPosts() {
-      return [
-        {
-          id: '001',
-          title: 'Nuxt.js Application',
-          body: 'テスト',
-          created_at: '2019/01/31 12:00:00',
-          user: {
-            id: 'potato'
-          }
-        },
-        {
-          id: '002',
-          title: 'Development Vue.js',
-          body: 'テスト',
-          created_at: '2019/01/31 15:00:00',
-          user: {
-            id: 'potato'
-          }
-        }
-      ]
+      return this.posts.map(post => {
+        post.created_at = moment(post.created_at).format('YYYY/MM/DD HH:mm:ss')
+        return post
+      })
+    },
+    ...mapGetters('posts', ['posts'])
+  },
+  methods: {
+    handleClick(post) {
+      this.$router.push(`/posts/${post.id}`)
     }
   }
 }
