@@ -23,10 +23,14 @@ export const mutations = {
 export const actions = {
   async publishPost({ commit }, { payload }) {
     const user = await this.$axios.$get(`/users/${payload.user.id}.json`)
-    const postId = (await this.$axios.$post('/posts.json', payload)).name
-    const createdAt = moment().format()
-    const post = { id: postId, ...payload, createdAt }
-    const putData = { id: postId, ...payload, createdAt }
+    const created_at = moment().format()
+    payload = {
+      created_at,
+      ...payload
+    }
+    const post_id = (await this.$axios.$post('/posts.json', payload)).name
+    const post = { id: post_id, ...payload }
+    const putData = { id: post_id, ...payload }
     delete putData.user
     await this.$axios.$put(`/users/${user.id}/posts.json`, [
       ...(user.posts || []),
